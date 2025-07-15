@@ -1,0 +1,29 @@
+name: بناء نواة Apatch لـ Begonia
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 نسخ الريبو
+        uses: actions/checkout@v4
+
+      - name: ⚙️ تثبيت أدوات البناء
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip build-essential bc libncurses-dev \
+            bison flex libssl-dev curl cpio python3 python3-pip wget
+
+      - name: 🛠️ تشغيل سكريبت البناء
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: 📦 رفع النتيجة
+        uses: actions/upload-artifact@v4
+        with:
+          name: نواة-بيجونيا-apatch
+          path: output/
